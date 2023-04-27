@@ -95,9 +95,9 @@ class StudentRegistrationSystem(Tk):
         max_row_value = sheet.cell(row=row, column=1).value
         print(max_row_value, type(max_row_value))
         try:
-            self.Registration.set(int(max_row_value)+1)
+            self.Registration.set(max_row_value+1)
         except Exception:
-            self.Registration.set("1")
+            self.Registration.set(1)
 
     def Clear(self):
         global img
@@ -176,17 +176,20 @@ class StudentRegistrationSystem(Tk):
         global fileimage
         global img
         global imagetype
-        fileimage = filedialog.askopenfilename(
-            initialdir=os.getcwd(), 
-            title="Select image file", 
-            filetypes=(("JPG File", "*.jpg"),("PNG File","*.png"),("All files","*.*"))
-            )
-        img = (Image.open(fileimage))
-        resize_img = img.resize((190,190))
-        photo2 = ImageTk.PhotoImage(resize_img)
-        self.lbl.config(image=photo2)
-        self.lbl.image = photo2
-        imagetype = fileimage
+        try:
+            fileimage = filedialog.askopenfilename(
+                initialdir=os.getcwd(), 
+                title="Select image file", 
+                filetypes=(("JPG File", "*.jpg"),("PNG File","*.png"),("All files","*.*"))
+                )
+            img = (Image.open(fileimage))
+            resize_img = img.resize((190,190))
+            photo2 = ImageTk.PhotoImage(resize_img)
+            self.lbl.config(image=photo2)
+            self.lbl.image = photo2
+            imagetype = fileimage
+        except Exception:
+            pass
         
     def __create_student_details(self):
         full_name = Label(self.lframe, text="Full name:", font="Arial 13", bg=framebg, fg=framefg)
@@ -338,7 +341,7 @@ class StudentRegistrationSystem(Tk):
             fg="#EDEDED")
         self.ldate.place(relx=0.4, rely=0.18)
         
-        self.Registration = StringVar()
+        self.Registration = IntVar()
         self.Date = StringVar()
         
         self.reg_entry = Entry(
