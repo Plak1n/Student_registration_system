@@ -209,14 +209,19 @@ class StudentRegistrationSystem(Tk):
             bg="#68ddfa",
             fg="black",
             image=self.searchimage,
-            font="Arial 13 bold")
+            font="Arial 13 bold",
+            command=self.search)
         self.search_button.place(relx=0.82, rely=0.04, relheight=0.07)       
     
         self.layerimg = PhotoImage(file="Images/Layer 4.png")
-        self.update_button = Button( 
+        self.update_button = Button(
+            text="Update student data",
+            font="Arial 13 bold",
             bg="#c36464",
-            image=self.layerimg) 
-        self.update_button.place(relx=0.1, rely=0.04)    
+            fg="#fff",
+            image=self.layerimg,
+            command=self.Update)
+        self.update_button.place(relx=0.1, rely=0.04)
     
     # Date and Registration
     def __create_date_registration(self):
@@ -259,6 +264,7 @@ class StudentRegistrationSystem(Tk):
         
     def __create_student_base(self):
         self.student_data = pathlib.Path("Student_data.xlsx")
+        
         if self.student_data.exists():
             pass
         else: 
@@ -277,7 +283,65 @@ class StudentRegistrationSystem(Tk):
             sheet['K1'] = "Father's Occupation"
             sheet['L1'] = "Mother's Occupation"             
 
-            self.student_data.save('Student_data.xlsx')
+            file.save("Student_data.xlsx")
+    
+    def search(self):
+        text = self.Search.get()
+        
+        self.Clear()
+        self.save_button.config(state='disable')
+        
+        file = openpyxl.load_workbook("Student_data.xlsx")
+        sheet = file.active
+
+        for row in sheet.rows:
+            if row[0].value == int(text):
+                name = row[0]
+                print(f"{name} {str(name)} {type(name)}")
+                reg_no_position = str(name)[14:-1] # A2 A3 A4
+                reg_number = str(name)[15:-1] # shows after A2, A2, A4
+                print(reg_no_position, reg_number)
+        try:
+            str(name)
+        except:
+            messagebox.showerror("Invalid", "Invalid regstistration number!!!")
+            
+        x1 = sheet.cell(row=int(reg_number), column=1).value
+        x2 = sheet.cell(row=int(reg_number), column=2).value
+        x3 = sheet.cell(row=int(reg_number), column=3).value
+        x4 = sheet.cell(row=int(reg_number), column=4).value
+        x5 = sheet.cell(row=int(reg_number), column=5).value
+        x6 = sheet.cell(row=int(reg_number), column=6).value
+        x7 = sheet.cell(row=int(reg_number), column=7).value
+        x8 = sheet.cell(row=int(reg_number), column=8).value
+        x9 = sheet.cell(row=int(reg_number), column=9).value
+        x10 = sheet.cell(row=int(reg_number), column=10).value
+        x11 = sheet.cell(row=int(reg_number), column=11).value
+        x12 = sheet.cell(row=int(reg_number), column=12).value
+        
+        self.Registration.set(x1)
+        self.Name.set(x2)
+        self.Class.set(x3)
+        
+        if x4 == "Female":
+            self.R2.select()
+        elif x4 == "Male":
+            self.R1.select()
+            
+        self.DOB.set(x5)
+        self.Date.set(x6)
+        self.Religion.set(x7)
+        self.Skills.set(x8)
+        self.father_name.set(x9)
+        self.Ocupation.set(x10)
+        self.mother_name.set(x11)
+        self.M_Ocupation.set(x12)
+        
+        img = (Image.open(f"Student_images/{x1}.jpg"))
+        resized_img = img.resize((190,190))
+        photo2 = ImageTk.PhotoImage(resized_img)
+        self.lbl.config(image=photo2)
+        self.lbl.image = photo2         
         
     def selection(self):
         value = self.radio.get()
@@ -287,7 +351,7 @@ class StudentRegistrationSystem(Tk):
             self.gender = "Female"   
         
     def exit(self, event=None):
-        answer = messagebox.askokcancel('Выход', 'Вы точно хотите выйти?')
+        answer = messagebox.askokcancel("Выход", "Вы точно хотите выйти?")
         if answer:
             self.quit()
     
@@ -363,9 +427,11 @@ class StudentRegistrationSystem(Tk):
             sheet.cell(column=11,row=sheet.max_row, value=F1)
             sheet.cell(column=12,row=sheet.max_row, value=M1)
             
+            print("Saving data")
             file.save(r'Student_data.xlsx')
             try:
-                img.save(imagetype) #img.save("Student_Images/"+str(self.R1)+".jpg")
+                print("Imagesaving")
+                img.save(f"Student_Images/{self.R1}.jpg") #img.save()
             except:
                 messagebox.showinfo("Info", "Profile Photo is not available!")
             
@@ -373,7 +439,59 @@ class StudentRegistrationSystem(Tk):
             
             self.Clear()
             self.registration_no()
-            
+    
+    def Update(self):
+        self.R1 = self.Registration.get()
+        N1 = self.Name.get()
+        C1 = self.Class.get()
+        self.selection()
+        G1 = self.gender
+        D2 = self.DOB.get()
+        D1 = self.Date.get()
+        Re1 = self.Religion.get()
+        S1 = self.Skills.get()
+        fathername = self.father_name.get()
+        mothername = self.mother_name.get()
+        F1 = self.Ocupation.get()
+        M1 = self.M_Ocupation.get()
+        
+        file = openpyxl.load_workbook("Student_data.xlsx")
+        sheet = file.active
+        
+        for row in sheet.rows:
+            if row[0].value == self.R1:
+                name = row[0]
+                print(str(name))
+                reg_no_position = str(name)[14:-1]
+                reg_number = str(name)[15:-1]
+                
+                print(reg_number)
+        
+        sheet.cell(column=1, row=int(reg_number), value=self.R1)
+        sheet.cell(column=2, row=int(reg_number), value=N1)
+        sheet.cell(column=3, row=int(reg_number), value=C1)
+        sheet.cell(column=4, row=int(reg_number), value=G1)
+        sheet.cell(column=5, row=int(reg_number), value=D2)
+        sheet.cell(column=6, row=int(reg_number), value=D1)
+        sheet.cell(column=7, row=int(reg_number), value=Re1)
+        sheet.cell(column=8, row=int(reg_number), value=S1)
+        sheet.cell(column=9, row=int(reg_number), value=fathername)
+        sheet.cell(column=10, row=int(reg_number), value=mothername)
+        sheet.cell(column=11, row=int(reg_number), value=F1)
+        sheet.cell(column=12, row=int(reg_number), value=M1)
+        
+        file.save(r'Student_data.xlsx')
+        
+        try:
+            img.save(f"Student_images/{R1}.jpg")
+
+        except:
+            pass
+        
+        messagebox.showinfo("Update", "Update Sucessfully!!")
+        self.Clear()          
+        
+        
     def showimage(self):
         global fileimage
         global img
