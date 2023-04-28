@@ -483,7 +483,7 @@ class StudentRegistrationSystem(Tk):
         file.save(r'Student_data.xlsx')
         
         try:
-            img.save(f"Student_images/{R1}.jpg")
+            img.save(f"Student_images/{self.R1}.jpg")
 
         except:
             pass
