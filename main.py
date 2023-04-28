@@ -83,114 +83,6 @@ class StudentRegistrationSystem(Tk):
         self.__create_student_details()
         self.__create_parents_details()
         
-    def exit(self, event=None):
-        answer = messagebox.askokcancel('Выход', 'Вы точно хотите выйти?')
-        if answer:
-            self.quit()
-    
-    def registration_no(self):
-        file = openpyxl.load_workbook("Student_data.xlsx")
-        sheet = file.active
-        row = sheet.max_row
-        max_row_value = sheet.cell(row=row, column=1).value
-        print(max_row_value, type(max_row_value))
-        try:
-            self.Registration.set(max_row_value+1)
-        except Exception:
-            self.Registration.set(1)
-
-    def Clear(self):
-        global img
-        self.Name.set('')
-        self.DOB.set('')
-        self.Religion.set('')
-        self.Skills.set('')
-        self.Ocupation.set('')
-        self.father_name.set('')
-        self.mother_name.set('')
-        self.M_Ocupation.set('')
-        self.Class.set('Select Class')
-        self.radio.set(0)
-        
-        self.registration_no()
-        self.save_button.config(state='normal')
-        
-        img1 = PhotoImage(file="Images\\upload photo.png")
-        self.lbl.config(image=img1)
-        self.lbl.image = img1
-        
-        img=""
-    
-    def Save(self):
-        self.R1 = self.Registration.get()
-        N1 = self.Name.get()
-        C1 = self.Class.get()
-        try:
-            G1 = self.gender
-            if self.radio.get() == 0:
-                messagebox.showerror("Error", "Select Gender!")
-                return
-        except:
-            messagebox.showerror("Error", "Select Gender!")
-            return
-        D2 = self.DOB.get()
-        D1 = self.Date.get()
-        Re1 = self.Religion.get()
-        S1 = self.Skills.get()
-        fathername = self.father_name.get()
-        mothername = self.mother_name.get()
-        F1 = self.Ocupation.get()
-        M1 = self.M_Ocupation.get()
-        
-        if N1 == '' or C1 == "Select Class" or D2 == "" or S1 =="" or Re1 == "" or fathername == "" or mothername == "" or F1 == "" or M1 == "":
-            messagebox.showerror("Error", "Few Data is missing")
-        else:
-            file =  openpyxl.load_workbook("Student_data.xlsx")
-            sheet = file.active
-            sheet.cell(column=1,row=sheet.max_row+1, value=self.R1)
-            sheet.cell(column=2,row=sheet.max_row, value=N1)
-            sheet.cell(column=3,row=sheet.max_row, value=C1)
-            sheet.cell(column=4,row=sheet.max_row, value=G1)
-            sheet.cell(column=5,row=sheet.max_row, value=D2)
-            sheet.cell(column=6,row=sheet.max_row, value=D1)
-            sheet.cell(column=7,row=sheet.max_row, value=Re1)
-            sheet.cell(column=8,row=sheet.max_row, value=S1)
-            sheet.cell(column=9,row=sheet.max_row, value=fathername)
-            sheet.cell(column=10,row=sheet.max_row, value=mothername)
-            sheet.cell(column=11,row=sheet.max_row, value=F1)
-            sheet.cell(column=12,row=sheet.max_row, value=M1)
-            
-            file.save(r'Student_data.xlsx')
-            try:
-                img.save(imagetype) #img.save("Student_Images/"+str(self.R1)+".jpg")
-            except:
-                messagebox.showinfo("Info", "Profile Photo is not available!")
-            
-            messagebox.showinfo("Info", "Sucessfully data entered!")
-            
-            self.Clear()
-            self.registration_no()
-            
-                    
-    def showimage(self):
-        global fileimage
-        global img
-        global imagetype
-        try:
-            fileimage = filedialog.askopenfilename(
-                initialdir=os.getcwd(), 
-                title="Select image file", 
-                filetypes=(("JPG File", "*.jpg"),("PNG File","*.png"),("All files","*.*"))
-                )
-            img = (Image.open(fileimage))
-            resize_img = img.resize((190,190))
-            photo2 = ImageTk.PhotoImage(resize_img)
-            self.lbl.config(image=photo2)
-            self.lbl.image = photo2
-            imagetype = fileimage
-        except Exception:
-            pass
-        
     def __create_student_details(self):
         full_name = Label(self.lframe, text="Full name:", font="Arial 13", bg=framebg, fg=framefg)
         full_name.place(relx=0.06, rely=0.11)
@@ -386,17 +278,122 @@ class StudentRegistrationSystem(Tk):
             sheet['L1'] = "Mother's Occupation"             
 
             self.student_data.save('Student_data.xlsx')
-    
+        
     def selection(self):
         value = self.radio.get()
         if value==1:
             self.gender = "Male"
         else:
-            self.gender = "Female"     
+            self.gender = "Female"   
+        
+    def exit(self, event=None):
+        answer = messagebox.askokcancel('Выход', 'Вы точно хотите выйти?')
+        if answer:
+            self.quit()
+    
+    def registration_no(self):
+        file = openpyxl.load_workbook("Student_data.xlsx")
+        sheet = file.active
+        row = sheet.max_row
+        max_row_value = sheet.cell(row=row, column=1).value
+        print(max_row_value, type(max_row_value))
+        try:
+            self.Registration.set(max_row_value+1)
+        except Exception:
+            self.Registration.set(1)
 
-
-
-
+    def Clear(self):
+        global img
+        self.Name.set('')
+        self.DOB.set('')
+        self.Religion.set('')
+        self.Skills.set('')
+        self.Ocupation.set('')
+        self.father_name.set('')
+        self.mother_name.set('')
+        self.M_Ocupation.set('')
+        self.Class.set('Select Class')
+        self.radio.set(0)
+        
+        self.registration_no()
+        self.save_button.config(state='normal')
+        
+        img1 = PhotoImage(file="Images\\upload photo.png")
+        self.lbl.config(image=img1)
+        self.lbl.image = img1
+        
+        img=""
+    
+    def Save(self):
+        self.R1 = self.Registration.get()
+        N1 = self.Name.get()
+        C1 = self.Class.get()
+        try:
+            G1 = self.gender
+            if self.radio.get() == 0:
+                messagebox.showerror("Error", "Select Gender!")
+                return
+        except:
+            messagebox.showerror("Error", "Select Gender!")
+            return
+        D2 = self.DOB.get()
+        D1 = self.Date.get()
+        Re1 = self.Religion.get()
+        S1 = self.Skills.get()
+        fathername = self.father_name.get()
+        mothername = self.mother_name.get()
+        F1 = self.Ocupation.get()
+        M1 = self.M_Ocupation.get()
+        
+        if N1 == '' or C1 == "Select Class" or D2 == "" or S1 =="" or Re1 == "" or fathername == "" or mothername == "" or F1 == "" or M1 == "":
+            messagebox.showerror("Error", "Few Data is missing")
+        else:
+            file =  openpyxl.load_workbook("Student_data.xlsx")
+            sheet = file.active
+            sheet.cell(column=1,row=sheet.max_row+1, value=self.R1)
+            sheet.cell(column=2,row=sheet.max_row, value=N1)
+            sheet.cell(column=3,row=sheet.max_row, value=C1)
+            sheet.cell(column=4,row=sheet.max_row, value=G1)
+            sheet.cell(column=5,row=sheet.max_row, value=D2)
+            sheet.cell(column=6,row=sheet.max_row, value=D1)
+            sheet.cell(column=7,row=sheet.max_row, value=Re1)
+            sheet.cell(column=8,row=sheet.max_row, value=S1)
+            sheet.cell(column=9,row=sheet.max_row, value=fathername)
+            sheet.cell(column=10,row=sheet.max_row, value=mothername)
+            sheet.cell(column=11,row=sheet.max_row, value=F1)
+            sheet.cell(column=12,row=sheet.max_row, value=M1)
+            
+            file.save(r'Student_data.xlsx')
+            try:
+                img.save(imagetype) #img.save("Student_Images/"+str(self.R1)+".jpg")
+            except:
+                messagebox.showinfo("Info", "Profile Photo is not available!")
+            
+            messagebox.showinfo("Info", "Sucessfully data entered!")
+            
+            self.Clear()
+            self.registration_no()
+            
+    def showimage(self):
+        global fileimage
+        global img
+        global imagetype
+        try:
+            fileimage = filedialog.askopenfilename(
+                initialdir=os.getcwd(), 
+                title="Select image file", 
+                filetypes=(("JPG File", "*.jpg"),("PNG File","*.png"),("All files","*.*"))
+                )
+            img = (Image.open(fileimage))
+            resize_img = img.resize((190,190))
+            photo2 = ImageTk.PhotoImage(resize_img)
+            self.lbl.config(image=photo2)
+            self.lbl.image = photo2
+            imagetype = fileimage
+        except Exception:
+            pass
+        
+  
 if __name__ == "__main__":
     MyApp = StudentRegistrationSystem()
     MyApp.mainloop()
