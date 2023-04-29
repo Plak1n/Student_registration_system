@@ -389,7 +389,7 @@ class StudentRegistrationSystem(Tk):
         img=""
     
     def Save(self):
-        self.R1 = self.Registration.get()
+        R1 = self.Registration.get()
         N1 = self.Name.get()
         C1 = self.Class.get()
         try:
@@ -414,7 +414,7 @@ class StudentRegistrationSystem(Tk):
         else:
             file =  openpyxl.load_workbook("Student_data.xlsx")
             sheet = file.active
-            sheet.cell(column=1,row=sheet.max_row+1, value=self.R1)
+            sheet.cell(column=1,row=sheet.max_row+1, value=R1)
             sheet.cell(column=2,row=sheet.max_row, value=N1)
             sheet.cell(column=3,row=sheet.max_row, value=C1)
             sheet.cell(column=4,row=sheet.max_row, value=G1)
@@ -431,7 +431,7 @@ class StudentRegistrationSystem(Tk):
             file.save(r'Student_data.xlsx')
             try:
                 print("Imagesaving")
-                img.save(f"Student_Images/{self.R1}.jpg") #img.save()
+                img.save(f"Student_Images/{R1}.jpg") #img.save()
             except:
                 messagebox.showinfo("Info", "Profile Photo is not available!")
             
@@ -441,7 +441,7 @@ class StudentRegistrationSystem(Tk):
             self.registration_no()
     
     def Update(self):
-        self.R1 = self.Registration.get()
+        R1 = self.Registration.get()
         N1 = self.Name.get()
         C1 = self.Class.get()
         self.selection()
@@ -459,7 +459,7 @@ class StudentRegistrationSystem(Tk):
         sheet = file.active
         
         for row in sheet.rows:
-            if row[0].value == self.R1:
+            if row[0].value == R1:
                 name = row[0]
                 print(str(name))
                 reg_no_position = str(name)[14:-1]
@@ -467,7 +467,7 @@ class StudentRegistrationSystem(Tk):
                 
                 print(reg_number)
         
-        sheet.cell(column=1, row=int(reg_number), value=self.R1)
+        sheet.cell(column=1, row=int(reg_number), value=R1)
         sheet.cell(column=2, row=int(reg_number), value=N1)
         sheet.cell(column=3, row=int(reg_number), value=C1)
         sheet.cell(column=4, row=int(reg_number), value=G1)
@@ -483,7 +483,7 @@ class StudentRegistrationSystem(Tk):
         file.save(r'Student_data.xlsx')
         
         try:
-            img.save(f"Student_images/{self.R1}.jpg")
+            img.save(f"Student_images/{R1}.jpg")
 
         except:
             pass
